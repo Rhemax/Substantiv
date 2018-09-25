@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Substantiv</string>
+    <string name="action_settings">Настройки</string>
+    <string name="game">Игра</string>
+    <string name="substantiv">Substantiv</string>
+    <string name="rule">Правило</string>
+    <string name="locale_key">Язык</string>
+    <string name="change_language">Изменить язык</string>
+    <string name="rules">Правила</string>
+    <string name="negative_button_text">Отмена</string>
+    <string name="positive_button_text">Сброить настройки</string>
+    <string name="reset_dialog_title">Сброить все настройки</string>
+    <string name="reset_message">Вы уверены что хотите сбросить все настройки?</string>
+</resources>

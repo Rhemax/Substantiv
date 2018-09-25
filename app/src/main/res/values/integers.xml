@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <integer name="default_max_score">4</integer>
+    <integer name="shuffle_max_score">999999</integer>
+    <integer name="default_quiz_count">100</integer>
+</resources>

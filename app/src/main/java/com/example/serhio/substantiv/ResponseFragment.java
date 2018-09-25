@@ -1,21 +1,14 @@
 package com.example.serhio.substantiv;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-
-import com.example.serhio.substantiv.entities.Gender;
-import com.example.serhio.substantiv.entities.Substantiv;
-import com.example.serhio.substantiv.logic.SubstantivManager;
 
 
 public class ResponseFragment extends Fragment {
@@ -23,7 +16,7 @@ public class ResponseFragment extends Fragment {
     private static final String GENDER = "gender";
 
     // TODO: Rename and change types of parameters
-    private Gender gender;
+    private String gender;
     private Button derButton;
     private Button dieButton;
     private Button dasButton;
@@ -39,14 +32,21 @@ public class ResponseFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(GENDER, gender);
         fragment.setArguments(args);
+        Log.e("Rhemaxus", gender);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("Testare", "Sunt in Response Fragment, onCreate");
         if (getArguments() != null) {
-            gender = Gender.valueOf(getArguments().getString(GENDER));
+            for (String key : savedInstanceState.keySet()) {
+                Log.e("Rhemaxus", "Keya: " + key);
+                Object obj = savedInstanceState.get(key);   //later parse it as per your required type
+            }
+            gender = savedInstanceState.getString("name");
+            Log.d("Rhemax", "Keya este: " + gender);
         }
     }
 
@@ -54,43 +54,21 @@ public class ResponseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view = inflater.inflate(R.layout.fragment_response, container, false);
+        View view = inflater.inflate(R.layout.fragment_response, container, false);
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonPressed(null);
+                Log.d("Rhemax", "Buton apasat!");
+            }
+        };
         derButton = view.findViewById(R.id.der);
         dieButton = view.findViewById(R.id.die);
         dasButton = view.findViewById(R.id.das);
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("Rhemax", "A fost apasat butonul: " + view.getId());
-                switch (gender){
-                    case DER:
-                        derButton.setBackgroundColor(Color.GREEN);
-                        if (view.getId()!= derButton.getId()) {
-                            view.setBackgroundColor(Color.RED);
-                        };
-                        mListener.buttonPressed();
-                        break;
-                    case DIE:
-                        dieButton.setBackgroundColor(Color.GREEN);
-                        if(view.getId() != dieButton.getId()) {
-                            view.setBackgroundColor(Color.RED);
-                        };
 
-                        mListener.buttonPressed();
-                        break;
-                    case DAS:
-                        dasButton.setBackgroundColor(Color.GREEN);
-                        if (view.getId() != dasButton.getId()){
-                            view.setBackgroundColor(Color.RED);
-                        };
-                        mListener.buttonPressed();
-                        break;
-                }
-            }
-        };
-        derButton.setOnClickListener(onClickListener);
-        dieButton.setOnClickListener(onClickListener);
-        dasButton.setOnClickListener(onClickListener);
+        derButton.setOnClickListener(clickListener);
+        dieButton.setOnClickListener(clickListener);
+        dasButton.setOnClickListener(clickListener);
         return view;
     }
 
@@ -98,7 +76,9 @@ public class ResponseFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
-        }
+            mListener.buttonPressed();
+            Log.d("Rhemax", "mListener nu este Null");
+        } else Log.d("Rhemax", "mListener este Null");
     }
 
     @Override
