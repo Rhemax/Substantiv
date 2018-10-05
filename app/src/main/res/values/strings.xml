@@ -70,5 +70,13 @@
     <string name="default_max_score_key">default_max_score</string>
     <string name="default_quiz_count_key">default_quiz_count</string>
     <string name="shuffle_quiz_count_key">shuffle_quiz_count</string>
+    <string name="score_quiz_record_key">score_quiz_record</string>
+    <string name="shuffle_quiz_record_key">shuffle_quiz_record</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="progress">Progress</string>
+    <string name="score_quiz_record_value">0</string>
+    <string name="shuffle_quiz_record_value">0</string>
 
 </resources>

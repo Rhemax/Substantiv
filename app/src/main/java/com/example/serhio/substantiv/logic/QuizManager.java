@@ -3,6 +3,7 @@ package com.example.serhio.substantiv.logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.example.serhio.substantiv.R;
 import com.example.serhio.substantiv.ScoreQuizFragment;
@@ -10,6 +11,7 @@ import com.example.serhio.substantiv.entities.GenderConstants;
 import com.example.serhio.substantiv.entities.Locales;
 import com.example.serhio.substantiv.entities.Quiz;
 
+import java.security.acl.LastOwnerException;
 import java.util.List;
 import java.util.Random;
 
@@ -19,6 +21,7 @@ import java.util.Random;
 
 //TODO optimize Scenario setting
 public class QuizManager {
+    private final String TAG = "Rhemax";
     private Context context;
     private String LANGUAGE = "language";
     private Locales locale;
@@ -37,6 +40,14 @@ public class QuizManager {
         dbManager = new DBManager(context);
         quizList = dbManager.getQuizList(scenario);
         currentQuiz = getNext();
+        Log.d(TAG, "QuizManager: quizList.size: " + quizList.size());
+        for (Quiz quizL: quizList){
+            Log.d(TAG, "START!!!!!! Name: " + quizL.getName() + ", Score: " + quizL.getScore());
+
+        }
+        for (Quiz quiz: quizList){
+            //Log.d(TAG, "QuizManager: name: " + quiz.getName() + ", score: " + quiz.getScore() + ", answers: " + quiz.getAnswerCount());
+        }
         // Log.d("Rhemax", "QuizManager: quizLIst size: " + quizList.size());
     }
 
@@ -99,17 +110,34 @@ public class QuizManager {
 
     private void updateQuizList() {
         boolean changeQuiz = scenario.change(currentQuiz);
+       // Log.d(TAG, "QuizMan., name: " + currentQuiz.getName() + "changeQuiz: " + changeQuiz + ", Score: " + currentQuiz.getScore());
         if (changeQuiz) {
             Quiz quiz = dbManager.getQuiz(scenario.getNext());
+         //   Log.d(TAG, "QuizManag., changeQuiz true, new quiz: " + quiz.getName()+ ", new score: " + quiz.getScore() + ", listSize: " + quizList.size());
             quizList.add(quiz);
+            quizList.remove(currentQuiz);
+
+/*            Log.d(TAG, "QuizMan, new Quiz: name" + quiz.getName() + ", rule: " + quiz.getRule() + ", list.size: " + quizList.size());
+            for (Quiz quizL: quizList){
+                Log.d(TAG, "Name: " + quizL.getName() + ", Score: " + quizL.getScore());
+
+            }*/
         }
     }
 
+    //todo resolve double get of this method by first call
     public Quiz getNext() {
         Random random = new Random();
-        int index = random.nextInt(quizList.size());
+        int quizListSize = quizList.size();
+        if (quizListSize == 0) return null;
+        int index = random.nextInt(quizListSize);
         currentQuiz = quizList.get(index);
+      //  Log.d(TAG, "QuizManager, getNext. Name: " + currentQuiz.getName() + ", Score: " + currentQuiz.getScore() + "AnswersCount: " + currentQuiz.getAnswerCount() + ", Translation: " + currentQuiz.getTranslation(Locales.RU));
         return currentQuiz;
+    }
+
+    public int[] getStatistics(){
+        return dbManager.getStatistic();
     }
 
     public void resetAll() {
@@ -160,6 +188,17 @@ public class QuizManager {
         if (dbManager != null) {
             dbManager.closeDatabase();
         }
+    }
+
+
+    public int getFalsesCount() {
+        return currentQuiz.getFalsesCOunt();
+    }
+
+    public int getQuizCount() {
+       // Log.d(TAG, "QuizManager, list.size: " + quizList.size());
+        if (quizList != null) return quizList.size();
+        return 0;
     }
 /*
     public void nextQuiz() {

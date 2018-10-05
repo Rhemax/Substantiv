@@ -17,6 +17,7 @@ public class Substantiv {
     private int answersCount;
     private int score;
     private Translation translations;
+    private int falsesResponsesCount;
 
     public Substantiv() {
         translations = new Translation();
@@ -136,7 +137,13 @@ public class Substantiv {
                 + ", Plural form: " + pluralForm;
     }
 
+    public int getFalsesResponsesCount() {
+        return falsesResponsesCount;
+    }
 
+    public void setFalsesResponsesCount(int falsesResponsesCount) {
+        this.falsesResponsesCount = falsesResponsesCount;
+    }
 
 
     private class Translation {

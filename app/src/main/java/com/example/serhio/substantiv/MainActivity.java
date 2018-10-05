@@ -11,9 +11,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.serhio.substantiv.entities.GenderConstants;
 import com.example.serhio.substantiv.entities.Locales;
@@ -21,6 +22,7 @@ import com.example.serhio.substantiv.entities.Quiz;
 import com.example.serhio.substantiv.entities.QuizBundleHelper;
 import com.example.serhio.substantiv.entities.QuizKeys;
 import com.example.serhio.substantiv.logic.DefaultScenario;
+import com.example.serhio.substantiv.logic.HardestScenario;
 import com.example.serhio.substantiv.logic.QuizManager;
 import com.example.serhio.substantiv.logic.ShuffleScenario;
 
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
     private Handler handler;
     private int changeDelay;
     private Locales locale = Locales.RU;
+    private Runnable changeQuizRunnable;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +52,10 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
-            ActionBar actionbar = getSupportActionBar();
-            actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-            actionbar.setDisplayHomeAsUpEnabled(true);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
         setNavigationListener();
 
@@ -70,10 +73,14 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
 
     //TODO optimize!!!
     public void next() {
-        handler.postDelayed(new Runnable() {
+       changeQuizRunnable =  new Runnable() {
             @Override
             public void run() {
                 Quiz quiz = quizManager.getNext();
+             /*   if (quiz == null) {
+                    return;
+                }*/
+                // Log.d(TAG, "Main, falsesCount: " + quizManager.getFalsesCount());
                 QuizBundleHelper helper = new QuizBundleHelper();
                 Bundle bundle = helper.createBundle()
                         .withGender(quizManager.getGender())
@@ -81,13 +88,18 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
                         .withTranslation(quizManager.getTranslation())
                         .withRule(quizManager.getRule())
                         .withScore(quizManager.getScore())
-                        .withShowAnswerState(quizManager.showScore())
+                        // .withShowAnswerState(quizManager.showScore())
                         .asBundle();
 
-                quizFragment.changeQuiz(bundle);
+                try {
+                    quizFragment.changeQuiz(handler, this, bundle);
 
+                } catch (NullPointerException exception){
+                    Log.d(TAG, "Main, ooops. Exception!!!");
+                }
             }
-        }, changeDelay);
+        };
+        handler.postDelayed(changeQuizRunnable, changeDelay);
     }
 
     public void menuButtonClick(int resourceId) {
@@ -122,6 +134,25 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
                 fragmentTransaction.addToBackStack(null).commit();
                 next();
                 changeDelay = quizManager.getDelay();
+                break;
+            }
+
+            case R.id.hardest_card_view: {
+                quizManager = new QuizManager(this, new HardestScenario(this));
+                if (quizManager.getQuizCount() == 0) {
+                    Toast.makeText(getApplicationContext(), "Sorry. The list is empty", Toast.LENGTH_LONG).show();
+                    break;
+                } else {                    Log.d(TAG, "ELSE!!! Sorry. The list is empty");
+
+                    quizFragment = new QuizFragment();
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.container, quizFragment);
+                    fragmentTransaction.addToBackStack(null).commit();
+                    next();
+                    changeDelay = quizManager.getDelay();
+
+                }
                 break;
             }
         }
@@ -182,8 +213,21 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
                 fragmentTransaction.replace(R.id.container, rulesFragment)
                         .addToBackStack(null).commit();
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-
+                return true;
             }
+
+            case R.id.progress_menu_item: {
+                //int[] data = {22, 22, 120, 22, 86};
+                quizManager = new QuizManager(this, new DefaultScenario(this));
+                int[] data = quizManager.getStatistics();
+                ProgressFragment progressFragment = ProgressFragment.newInstance(data);
+                fragmentTransaction.replace(R.id.container, progressFragment)
+                        .addToBackStack(null).commit();
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+
+
         }
         return false;
     }

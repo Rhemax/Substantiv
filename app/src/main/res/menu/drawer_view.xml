@@ -10,6 +10,8 @@
         <item
             android:id="@+id/rules_menu_item"
             android:title="@string/rules" />
-        <item android:title="Tools" />
+
+        <item android:id="@+id/progress_menu_item"
+            android:title="@string/progress"/>
     </group>
 </menu>

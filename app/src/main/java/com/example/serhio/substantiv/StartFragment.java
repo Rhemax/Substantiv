@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 /**
@@ -50,6 +51,7 @@ public class StartFragment extends Fragment {
 
         CardView learnCardView = view.findViewById(R.id.learn_card_view);
         CardView shuffleCardView = view.findViewById(R.id.shuffle_card_view);
+        CardView hardestCardView = view.findViewById(R.id.hardest_card_view);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -63,6 +65,14 @@ public class StartFragment extends Fragment {
         learnCardView.setOnClickListener(onClickListener);
         shuffleCardView.setOnClickListener(onClickListener);
 
+        hardestCardView.setOnClickListener(onClickListener);
+/*        hardestCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Sorry. Will be available when you get at least 30 difficult words.", Toast.LENGTH_LONG).show();
+
+            }
+        });*/
 /*       /Button startButton = view.findViewById(R.id.start_game_button);
         Button shuffleButton = view.findViewById(R.id.shuffle_game_button);
 

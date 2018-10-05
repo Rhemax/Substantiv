@@ -4,7 +4,12 @@
     <color name="colorPrimaryDark">#FF303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="greenSoft">#FF00E676</color>
+    <color name="pink">#E91E63</color>
+    <color name="blue">#2196F3</color>
+    <color name="green">#4CAF50</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="grey">#9E9E9E</color>
+    <color name="orange">#FF9800</color>
     <color name="red">#FFD50000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="grey">#FF78909C</color>
 </resources>

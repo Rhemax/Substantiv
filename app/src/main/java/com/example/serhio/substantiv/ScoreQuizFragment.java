@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import com.example.serhio.substantiv.entities.QuizKeys;
 
 public class ScoreQuizFragment extends QuizFragment {
 
-    // Animation a;
     private LinearLayout scoreContainer;
     private ImageView scoreIconView;
     private boolean showScore;
@@ -26,30 +24,23 @@ public class ScoreQuizFragment extends QuizFragment {
         // Required empty public constructor
     }
 
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected View getNextCard() {
+        LayoutInflater inflater = getLayoutInflater();
+        View newCardView = inflater.inflate(R.layout.quiz_score_card_view, null, false);
+        populateNewCardView(newCardView);
 
-        View view = inflater.inflate(R.layout.fragment_score_quiz, null);
-        this.initFields(view);
-        this.attachClickListeners();
-
-        return view;
+        return newCardView;
     }
 
     @Override
-    protected void initFields(View view) {
-        super.initFields(view);
-        scoreContainer = view.findViewById(R.id.score_container);
-        scoreIconView = view.findViewById(R.id.scoreIcon);
-    }
-
-
-    public void showNextQuiz() {
-        super.showNextQuiz();
-
+    protected void populateNewCardView(View toPopulateView) {
+        super.populateNewCardView(toPopulateView);
+        scoreContainer = toPopulateView.findViewById(R.id.score_container);
+        scoreIconView = toPopulateView.findViewById(R.id.scoreIcon);
         int score = getArguments().getInt(QuizKeys.SCORE);
-        showScore = getArguments().getBoolean(QuizKeys.SHOW_SCORE);
         updateScoreView(score);
     }
 
@@ -72,9 +63,9 @@ public class ScoreQuizFragment extends QuizFragment {
 
     //TODO optimize and clean code
     private void updateScoreView(int score) {
-
         scoreContainer.removeAllViews();
-        if (showScore) {
+       // if (showScore) {
+        if (true) {
             for (int x = 0; x < score; x++) {
                 ImageView scoreImage = new ImageView(getContext());
                 scoreImage.setBackgroundResource(R.drawable.star_gold);
@@ -97,11 +88,6 @@ public class ScoreQuizFragment extends QuizFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public void changeQuiz(Bundle bundle) {
-        updateBundle(bundle);
-        showNextQuiz();
     }
 
     @Override

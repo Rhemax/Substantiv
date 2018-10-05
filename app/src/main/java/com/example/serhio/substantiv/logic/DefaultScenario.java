@@ -16,6 +16,7 @@ public class DefaultScenario extends Scenario {
 
     private int quizCount;
     private int maxScore;
+    private int maxId;
 
     public DefaultScenario(Context context) {
         super(context);
@@ -23,12 +24,12 @@ public class DefaultScenario extends Scenario {
         String quizCounterKey = context.getResources().getString(R.string.default_quiz_count_key);
         maxScore = Integer.parseInt(preferences.getString(maxScoreKey, "4"));
        // quizCount = Integer.parseInt(preferences.getString(quizCounterKey, "30"));
-                    quizCount = 26;
+                    quizCount = 3;
     }
 
     @Override
     public boolean change(Quiz quiz) {
-        boolean change = (quiz.getScore() <= maxScore) ? false : true;
+        boolean change = (quiz.getScore() < maxScore) ? false : true;
         return change;
     }
 
@@ -40,16 +41,26 @@ public class DefaultScenario extends Scenario {
 
     @Override
     public void updateQuiz(Quiz quiz, boolean response) {
+
         int score = quiz.getScore();
         score = (response == true) ? ++score : --score;
+        int falses = quiz.getFalsesCOunt();
+       // Log.d("Rhemax", "DefaultScenario, falses before: " + falses);
+        if (!response) quiz.setFalsesCount(falses++);
+       // Log.d("Rhemax", "DefaultScenario, falses after: " + quiz.getFalsesCOunt());
         score = (score < 0) ? 0 : score;
         quiz.setScore(score);
+        int answersCount = quiz.getAnswerCount();
+        quiz.setAnswerCount(++answersCount);
     }
 
     @Override
     //TODO Optimize select - can cause problem when for example 51 is missing
     public String getNext() {
-        return "SELECT * FROM " + ConstantsSQL.SUBSTANTIV_TABLE + " WHERE _id=" + ++quizCount;
+        String sqlRequest = "SELECT * FROM  (SELECT * FROM " + ConstantsSQL.SUBSTANTIV_TABLE +  " WHERE " + ConstantsSQL.SCORE + " < " + maxScore + " ORDER BY " + ConstantsSQL.FREQUENCE_RATE + " ASC " + " LIMIT " + (quizCount + 1) + ") " + " ORDER BY " + ConstantsSQL.FREQUENCE_RATE + " DESC " + " LIMIT " + 1;
+        //return "SELECT * FROM " + ConstantsSQL.SUBSTANTIV_TABLE + " WHERE _id=" + ++quizCount;
+        //Log.d("Rhemax" , "DefScenario, request: " + sqlRequest);
+        return  sqlRequest;
     }
 
     @Override

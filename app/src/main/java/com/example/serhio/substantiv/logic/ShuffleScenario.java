@@ -20,7 +20,7 @@ public class ShuffleScenario extends Scenario {
 
     @Override
     public String getSubstantivListSQLRequest() {
-        return "SELECT * FROM " + ConstantsSQL.SUBSTANTIV_TABLE;
+        return "SELECT * FROM " + ConstantsSQL.SUBSTANTIV_TABLE + " LIMIT 1000";
     }
 
     @Override

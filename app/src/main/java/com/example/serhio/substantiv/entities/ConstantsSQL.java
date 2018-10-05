@@ -28,6 +28,7 @@ public class ConstantsSQL {
     public static final String FREQUENCE_RATE = "frequenceRate";
     public static final String ANSWERS_COUNT = "answersCount";
     public static final String SCORE = "score";
+    public static final String FALSES_COUNT = "falsesCount";
 
     // rules table
     public static final String RULE = "rule";

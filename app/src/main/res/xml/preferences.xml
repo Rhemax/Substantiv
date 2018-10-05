@@ -34,6 +34,13 @@
         android:defaultValue="@integer/shuffle_max_score"
         android:key="@string/shuffle_quiz_count_key"/>
 
+    <ListPreference
+        android:defaultValue="@string/score_quiz_record_value"
+        android:key="@string/score_quiz_record_key"/>
+
+    <ListPreference
+        android:defaultValue="@string/shuffle_quiz_record_value"
+        android:key="@string/shuffle_quiz_record_key"/>
 
 </PreferenceScreen>
 

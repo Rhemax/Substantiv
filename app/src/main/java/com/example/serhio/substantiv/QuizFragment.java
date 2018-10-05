@@ -2,10 +2,13 @@ package com.example.serhio.substantiv;
 
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +25,20 @@ import com.example.serhio.substantiv.entities.QuizKeys;
 
 public class QuizFragment extends Fragment {
 
+    private final static String CURRENT_ROW_SCORE = "currentRowScoreKey";
+    private int currentRowScore;
+    private int recordRowScore;
+    protected TextView recordView;
+    protected TextView currentView;
     protected View.OnClickListener clickListener;
-    protected TextView substantivTextView;
     protected TextView genderTextView;
-    protected TextView ruleTextView;
-    protected TextView translationTextView;
     protected Button derButton;
     protected Button dieButton;
     protected Button dasButton;
     protected QuizFragment.OnFragmentInteractionListener mListener;
-
+    protected String recordKey;
+    protected Handler handler;
+    protected Runnable changeQuizRunnable;
 
     public QuizFragment() {
         // Required empty public constructor
@@ -41,6 +48,8 @@ public class QuizFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setArguments(new Bundle());
+        if(savedInstanceState != null) currentRowScore = savedInstanceState.getInt(CURRENT_ROW_SCORE);
+        else currentRowScore = 0;
     }
 
     @Override
@@ -54,10 +63,6 @@ public class QuizFragment extends Fragment {
         return view;
     }
 
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
-    }
-
     protected void attachClickListeners() {
         clickListener = new View.OnClickListener() {
             @Override
@@ -65,13 +70,15 @@ public class QuizFragment extends Fragment {
                 boolean isRight = mListener.answered(view.getId());
                 LinearLayout backgroudLayout = getView().findViewById(R.id.substantiv_container);
                 if (isRight) {
-                    view.setBackgroundColor(Color.GREEN);
                     backgroudLayout.setBackgroundColor(getResources().getColor(R.color.greenSoft));
+                    view.setBackgroundResource(R.drawable.right_antwort_button);
                 } else {
-                    view.setBackgroundColor(Color.RED);
+                   // view.setBackgroundColor(Color.RED);
+                    view.setBackgroundResource(R.drawable.false_antwort_button);
                     backgroudLayout.setBackgroundColor(getResources().getColor(R.color.red));
                 }
                 showAnswer();
+                updateRowScore(isRight);
             }
         };
 
@@ -80,12 +87,35 @@ public class QuizFragment extends Fragment {
         dasButton.setOnClickListener(clickListener);
     }
 
+    private void updateRowScore(boolean isRight) {
+        currentRowScore = isRight ? (++currentRowScore) : 0;
+        updateCurrentRowScore(currentRowScore);
+
+        if (currentRowScore > recordRowScore) updateRecordRowScore(currentRowScore);
+    }
+
+    private void updateCurrentRowScore(int score) {
+        currentView.setText("Current: " + score);
+    }
+
+    private void updateRecordRowScore(int score) {
+        recordView.setText("Record: " + score);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = preferences.edit();
+       // String recordKey = "score_quiz_record";
+        editor.putString(recordKey, String.valueOf(score));
+        editor.commit();
+    }
+
     protected void initFields(View view) {
 
-        substantivTextView = view.findViewById(R.id.substantiv_text_view);
-        genderTextView = view.findViewById(R.id.gender_text_view);
-        ruleTextView = view.findViewById(R.id.rule_text_view);
-        translationTextView = view.findViewById(R.id.translation_text_view);
+        recordKey = getResources().getString(R.string.score_quiz_record_key);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        recordRowScore = Integer.parseInt(preferences.getString(recordKey, "0"));
+        recordView = view.findViewById(R.id.record);
+        updateRecordRowScore(recordRowScore);
+        currentView = view.findViewById(R.id.current);
+        updateCurrentRowScore(currentRowScore);
         derButton = view.findViewById(R.id.der);
         dieButton = view.findViewById(R.id.die);
         dasButton = view.findViewById(R.id.das);
@@ -94,51 +124,22 @@ public class QuizFragment extends Fragment {
 
     //TODO Update clickListener adding
     protected void showNextQuiz() {
-        String name = getArguments().getString(QuizKeys.SUBSTANTIV_NAME);
-        String gender = getArguments().getString(QuizKeys.GENDER);
-        String rule = getArguments().getString(QuizKeys.RULE);
-        String translation = getArguments().getString(QuizKeys.TRANSLATION);
-
-        LayoutInflater inflater = getLayoutInflater();
-
         View currentView = getView().findViewById(R.id.cardViewContainer);
+        View newCardView = getNextCard();
+        changeCards(currentView, newCardView);
 
+        resetAntwortButtons();
+    }
 
-/*        ViewGroup.LayoutParams layoutParams = currentView.getLayoutParams();
-        ViewGroup parent = (ViewGroup) currentView.getParent();
-        int index = parent.indexOfChild(currentView);
-        int currentViewIndexID = currentView.getId();
+    protected View getNextCard() {
+        LayoutInflater inflater = getLayoutInflater();
+        View newCardView = inflater.inflate(R.layout.quiz_card_view, null, false);
+        populateNewCardView(newCardView);
 
-        Animation outToLeftAnimation = outToLeftAnimation();
-        Interpolator interpolator = android.support.v4.view.animation.PathInterpolatorCompat.create(1.000f, 0.025f, 0.285f, 1.160f);
-        outToLeftAnimation.setInterpolator(interpolator);
-        currentView.setAnimation(outToLeftAnimation);
+        return newCardView;
+    }
 
-        parent.removeView(currentView);*/
-
-        View cardView = inflater.inflate(R.layout.quiz_card_view, null, false);
-        /*
-        cardView.setLayoutParams(layoutParams);
-        cardView.setId(currentViewIndexID);*/
-
-        genderTextView = cardView.findViewById(R.id.gender_text_view);
-        TextView substantivView = cardView.findViewById(R.id.substantiv_text_view);
-        TextView translationView = cardView.findViewById(R.id.translation_text_view);
-        TextView ruleView = cardView.findViewById(R.id.rule_text_view);
-        genderTextView.setText(gender);
-        genderTextView.setVisibility(View.INVISIBLE);
-        substantivView.setText(name);
-        translationView.setText(translation);
-        ruleView.setText(rule);
-
-/*        Animation inFromRightAnimation = inFromRightAnimation();
-        inFromRightAnimation.setInterpolator(interpolator);
-        cardView.setAnimation(inFromRightAnimation);
-
-        parent.addView(cardView, index);*/
-
-        changeCards(currentView, cardView);
-
+    protected void resetAntwortButtons() {
         setButtonsClickListener();
 
         derButton.setBackgroundResource(R.drawable.default_antwort_button);
@@ -146,7 +147,27 @@ public class QuizFragment extends Fragment {
         dasButton.setBackgroundResource(R.drawable.default_antwort_button);
     }
 
-    private void changeCards(View currentCardView, View newCardView){
+
+    protected void populateNewCardView(View toPopulateView) {
+        String name = getArguments().getString(QuizKeys.SUBSTANTIV_NAME);
+        String gender = getArguments().getString(QuizKeys.GENDER);
+        String rule = getArguments().getString(QuizKeys.RULE);
+        String translation = getArguments().getString(QuizKeys.TRANSLATION);
+      //  Log.d("Rhemax", "QuizFrag, name: " + name + " rule: " + rule);
+
+        genderTextView = toPopulateView.findViewById(R.id.gender_text_view);
+        TextView substantivView = toPopulateView.findViewById(R.id.substantiv_text_view);
+        TextView translationView = toPopulateView.findViewById(R.id.translation_text_view);
+        TextView ruleView = toPopulateView.findViewById(R.id.rule_text_view);
+
+        genderTextView.setText(gender);
+        genderTextView.setVisibility(View.INVISIBLE);
+        substantivView.setText(name);
+        translationView.setText(translation);
+        ruleView.setText(rule);
+    }
+
+    protected void changeCards(View currentCardView, View newCardView) {
         ViewGroup.LayoutParams layoutParams = currentCardView.getLayoutParams();
         ViewGroup parent = (ViewGroup) currentCardView.getParent();
         int index = parent.indexOfChild(currentCardView);
@@ -183,67 +204,16 @@ public class QuizFragment extends Fragment {
     }
 
     private Animation outToLeftAnimation() {
-        Animation outtoLeft = new TranslateAnimation(
+        Animation outToLeft = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, -2.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f);
-        outtoLeft.setDuration(300);
-        outtoLeft.setInterpolator(new AccelerateInterpolator());
-        return outtoLeft;
+        outToLeft.setDuration(300);
+        outToLeft.setInterpolator(new AccelerateInterpolator());
+        return outToLeft;
     }
 
-    /*1)inFromRightAnimation
-
-    private Animation inFromRightAnimation() {
-
-        Animation inFromRight = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, +1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
-        inFromRight.setDuration(500);
-        inFromRight.setInterpolator(new AccelerateInterpolator());
-        return inFromRight;
-        }
-
- 2)outToLeftAnimation
-    private Animation outToLeftAnimation() {
-    Animation outtoLeft = new TranslateAnimation(
-        Animation.RELATIVE_TO_PARENT, 0.0f,
-        Animation.RELATIVE_TO_PARENT, -1.0f,
-        Animation.RELATIVE_TO_PARENT, 0.0f,
-        Animation.RELATIVE_TO_PARENT, 0.0f);
-    outtoLeft.setDuration(500);
-    outtoLeft.setInterpolator(new AccelerateInterpolator());
-    return outtoLeft;
-    }
-
-3)inFromLeftAnimation
-
-    private Animation inFromLeftAnimation() {
-    Animation inFromLeft = new TranslateAnimation(
-        Animation.RELATIVE_TO_PARENT, -1.0f,
-        Animation.RELATIVE_TO_PARENT, 0.0f,
-        Animation.RELATIVE_TO_PARENT, 0.0f,
-        Animation.RELATIVE_TO_PARENT, 0.0f);
-    inFromLeft.setDuration(500);
-    inFromLeft.setInterpolator(new AccelerateInterpolator());
-    return inFromLeft;
-    }
-
-4)outToRightAnimation
-
-    private Animation outToRightAnimation() {
-    Animation outtoRight = new TranslateAnimation(
-        Animation.RELATIVE_TO_PARENT, 0.0f,
-        Animation.RELATIVE_TO_PARENT, +1.0f,
-        Animation.RELATIVE_TO_PARENT, 0.0f,
-        Animation.RELATIVE_TO_PARENT, 0.0f);
-    outtoRight.setDuration(500);
-    outtoRight.setInterpolator(new AccelerateInterpolator());
-    return outtoRight;
-    }*/
     protected void showAnswer() {
         Animation a = AnimationUtils.loadAnimation(this.getContext(), R.anim.fade_in);
         a.reset();
@@ -265,7 +235,9 @@ public class QuizFragment extends Fragment {
         dasButton.setOnClickListener(null);
     }
 
-    public void changeQuiz(Bundle bundle) {
+    public void changeQuiz(Handler handler, Runnable changeQuizRunnable, Bundle bundle) {
+        this.handler = handler;
+        this.changeQuizRunnable = changeQuizRunnable;
         updateBundle(bundle);
         showNextQuiz();
     }
@@ -281,10 +253,12 @@ public class QuizFragment extends Fragment {
         }
     }
 
+    //todo anunta mainul ca detasezi fragmentul pentru a anula callbackul
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (handler != null) handler.removeCallbacks(changeQuizRunnable);
     }
 
     protected void updateBundle(Bundle bundle) {
@@ -294,6 +268,7 @@ public class QuizFragment extends Fragment {
         getArguments().putString(QuizKeys.TRANSLATION, bundle.getString(QuizKeys.TRANSLATION));
         getArguments().putString(QuizKeys.RULE, bundle.getString(QuizKeys.RULE));
 
+      //  Log.d("Rhemax", "QuizFragment, Subst.name: " + getArguments().get(QuizKeys.SUBSTANTIV_NAME));
 
     }
 
@@ -310,6 +285,7 @@ public class QuizFragment extends Fragment {
         outState.putString(QuizKeys.SUBSTANTIV_NAME, name);
         outState.putString(QuizKeys.TRANSLATION, translation);
         outState.putString(QuizKeys.RULE, rule);
+        outState.putInt(CURRENT_ROW_SCORE, currentRowScore);
 
     }
 

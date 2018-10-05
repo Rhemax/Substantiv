@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.serhio.substantiv.entities.ConstantsSQL;
 import com.example.serhio.substantiv.entities.Locales;
+import com.example.serhio.substantiv.entities.Quiz;
 import com.example.serhio.substantiv.entities.Rule;
 import com.example.serhio.substantiv.entities.Substantiv;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -59,11 +60,13 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
                 substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
                 substantiv.setFrequenceRate(cursor.getInt(7));
                 substantiv.setAnswersCount(cursor.getInt(8));
-                substantiv.setScore(cursor.getInt(9));
-                substantiv.addTranslation(Locales.EN, cursor.getString(10));
-                substantiv.addTranslation(Locales.RU, cursor.getString(11));
-                substantiv.addTranslation(Locales.RO, cursor.getString(12));
+                substantiv.setFalsesResponsesCount(cursor.getInt(9));
+                substantiv.setScore(cursor.getInt(10));
+                substantiv.addTranslation(Locales.EN, cursor.getString(11));
+                substantiv.addTranslation(Locales.RU, cursor.getString(12));
+                substantiv.addTranslation(Locales.RO, cursor.getString(13));
                 substantivs.add(substantiv);
+              //  Log.d("Rhemax", "DatabaseAssetHelper, En: " + substantiv.getTranslation(Locales.EN)+ ", Ru: " + substantiv.getTranslation(Locales.RU) + ", Ro: " + substantiv.getTranslation(Locales.RO));
             } while (cursor.moveToNext());
 
         };
@@ -103,6 +106,34 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
             substantiv.setRuleId(cursor.getInt(5));
             int ruleId = cursor.getInt(5);
             //TODO Optimize!!!
+            List<Rule> rules = getRuleList();
+
+            for (Rule rule : rules) {
+                if (rule.getId() == ruleId) {
+                    substantiv.setRule(rule);
+                }
+            }
+            if (substantiv.getRule() == null) {
+                Rule rule = new Rule();
+                rule.setRule("No sugestions");
+                substantiv.setRule(rule);
+            }
+            substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
+            substantiv.setFrequenceRate(cursor.getInt(7));
+            substantiv.setAnswersCount(cursor.getInt(8));
+            substantiv.setFalsesResponsesCount(cursor.getInt(9));
+            substantiv.setScore(cursor.getInt(10));
+            substantiv.addTranslation(Locales.EN, cursor.getString(11));
+            substantiv.addTranslation(Locales.RU, cursor.getString(12));
+            substantiv.addTranslation(Locales.RO, cursor.getString(13));
+/*            substantiv.setId(cursor.getInt(0));
+            substantiv.setName(cursor.getString(1));
+            substantiv.setGender(cursor.getString(2));
+            substantiv.setPluralForm(cursor.getString(3));
+            substantiv.setExplanation(cursor.getString(4));
+            substantiv.setRuleId(cursor.getInt(5));
+            int ruleId = cursor.getInt(5);
+            //TODO Optimize!!!
             ArrayList<Rule> rules = new ArrayList<>();
             for (Rule rule : rules) {
                 if (rule.getId() == ruleId) {
@@ -118,8 +149,9 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
             substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
             substantiv.setFrequenceRate(cursor.getInt(7));
             substantiv.setAnswersCount(cursor.getInt(8));
-            substantiv.setScore(cursor.getInt(9));
+            substantiv.setScore(cursor.getInt(9));*/
         } else Log.d(TAG, "DatabaseHelper, getQuiz: cursor is empty");
+        cursor.close();
         return substantiv;
     }
 
@@ -129,6 +161,17 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
         contentValues.put(ConstantsSQL.ANSWERS_COUNT, answerCount);
         String WHERE = ConstantsSQL.ID + "=" + id;
         int updatedRow = mDataBase.update(ConstantsSQL.SUBSTANTIV_TABLE, contentValues, WHERE, null);
+      //  Log.d(TAG, "DatabaseAssetHelper, 3 params method: updated rows: " + updatedRow);
+    }
+
+    public void update(Quiz quiz) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ConstantsSQL.SCORE, quiz.getScore());
+        contentValues.put(ConstantsSQL.ANSWERS_COUNT, quiz.getAnswerCount());
+        contentValues.put(ConstantsSQL.FALSES_COUNT, quiz.getFalsesCOunt());
+        String WHERE = ConstantsSQL.ID + "=" + quiz.getId();
+        int updatedRow = mDataBase.update(ConstantsSQL.SUBSTANTIV_TABLE, contentValues, WHERE, null);
+        //Log.d(TAG, "DatabaseAssetHelper, Quiz params method: updated rows: " + updatedRow);
     }
 
     //todo optimize updatedCount - should be -1 and not -2
@@ -139,6 +182,7 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
         contentValues.put(ConstantsSQL.SCORE, 0);
         contentValues.put(ConstantsSQL.ANSWERS_COUNT, 0);
         contentValues.put(ConstantsSQL.IS_FAVORITE, 0);
+        contentValues.put(ConstantsSQL.FALSES_COUNT, 0);
         String WHERE = ConstantsSQL.ANSWERS_COUNT + ">" + 0;
 
         updatedCount = mDataBase.update(ConstantsSQL.SUBSTANTIV_TABLE, contentValues, WHERE, null);

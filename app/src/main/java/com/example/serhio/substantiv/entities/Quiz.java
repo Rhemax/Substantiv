@@ -47,6 +47,14 @@ public class Quiz {
         return substantiv.getAnswersCount();
     }
 
+    public void setAnswerCount(int count) {
+        substantiv.setAnswersCount(count);
+    }
+
+    public void setFalsesCount(int count) { substantiv.setFalsesResponsesCount(count);}
+
+    public int getFalsesCOunt() { return substantiv.getFalsesResponsesCount();}
+
     public int getId() {
         return substantiv.getId();
     }

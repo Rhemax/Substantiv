@@ -1,12 +1,14 @@
 package com.example.serhio.substantiv.logic;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.serhio.substantiv.DatabaseAssetHelper;
 import com.example.serhio.substantiv.entities.Quiz;
 import com.example.serhio.substantiv.entities.Substantiv;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -45,8 +47,43 @@ public class DBManager {
     }
 
     public Quiz getQuiz(String sqlRequest) {
-        Substantiv substantiv = dbhelper.getSubstantiv(sqlRequest);
+       // Substantiv substantiv = dbhelper.getSubstantiv(sqlRequest);
+        Substantiv substantiv = dbAssetHelper.getSubstantiv(sqlRequest);
+
         return new Quiz(substantiv);
+    }
+
+    public int[] getStatistic(){
+      List<Quiz> substantivs =  getQuizList(new ShuffleScenario(context));
+      int[] data = new int[5];
+        for (Quiz quiz : substantivs) {
+            int score = quiz.getScore();
+
+            switch (score) {
+                case 0: {
+                    data[4]++;
+                    break;
+                }
+                case 1: {
+                    data[3]++;
+                    break;
+                }
+                case 2: {
+                    data[2]++;
+                    break;
+                }
+                case 3: {
+                    data[1]++;
+                    break;
+                }
+                case 4: {
+                    data[0]++;
+                    break;
+                }
+            }
+        }
+        Log.d("Rhemax", "DBManager, statistic: list.size: " + substantivs.size() + "learned-" + data[0] + "; three-" + data[1] + "; two-" + data[2] + "; one-" + data[3] + "; to learn-" + data[4]);
+        return data;
     }
 
     public void save(Quiz currentQuiz) {
@@ -54,7 +91,8 @@ public class DBManager {
         int score = currentQuiz.getScore();
         int answerCount = currentQuiz.getAnswerCount();
         //dbhelper.update(id, score, ++answerCount);
-        dbAssetHelper.update(id, score, ++answerCount);
+       // dbAssetHelper.update(id, score, ++answerCount);
+        dbAssetHelper.update(currentQuiz);
     }
 
     public void resetAll() {

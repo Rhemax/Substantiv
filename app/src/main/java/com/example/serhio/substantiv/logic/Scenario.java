@@ -44,10 +44,11 @@ public abstract class Scenario {
     //i.e. update 'score' of Quiz regarding for false/true response
     public abstract void updateQuiz(Quiz quiz, boolean response);
 
-    //Return a new SQL Request from SQL Database that past to Scenario criteria for getting a new Quiz
+    //Return a new SQL Request from SQL Database that past to Scenario criteria for getting a new Quiz object
     public abstract String getNext();
 
 
+    //todo move method to an specialized class. This class is only for sql methods
     //Return delay between next Quiz show in seconds
     public int getDelay() {
         String changeSpeed = context.getResources().getString(R.string.change_speed);
@@ -55,5 +56,6 @@ public abstract class Scenario {
         return quizChangeDelay;
     }
 
+    //TODO delete this method
     public abstract boolean showScore();
 }
