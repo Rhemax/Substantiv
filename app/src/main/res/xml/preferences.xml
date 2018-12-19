@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <ListPreference
+        android:key="@string/locale_key"
+        android:defaultValue="@string/default_language"
+        android:dialogTitle="@string/select_language"
+        android:entries="@array/language_names"
+        android:entryValues="@array/language_values"
+        android:summary="%s"
+        android:title="@string/change_language" />
+
+    <ListPreference
+        android:key="@string/change_speed"
+        android:defaultValue="@string/default_speed"
+        android:dialogTitle="@string/speed"
+        android:entries="@array/speed_array_names"
+        android:entryValues="@array/speed_array_values"
+        android:summary="%s"
+        android:title="@string/speed" />
+
+    <com.example.serhio.substantiv.entities.MyDialogPreference android:title="Reset all settings" />
+
+    <ListPreference
+        android:defaultValue="@integer/default_max_score"
+        android:key="@string/default_max_score_key" />
+
+    <ListPreference
+        android:defaultValue="@integer/default_quiz_count"
+        android:key="@string/default_quiz_count_key" />
+
+    <ListPreference
+        android:defaultValue="@integer/shuffle_max_score"
+        android:key="@string/shuffle_quiz_count_key"/>
+
+    <ListPreference
+        android:defaultValue="@string/score_quiz_record_value"
+        android:key="@string/score_quiz_record_key"/>
+
+    <ListPreference
+        android:defaultValue="@string/shuffle_quiz_record_value"
+        android:key="@string/shuffle_quiz_record_key"/>
+
+</PreferenceScreen>
+
