@@ -1,7 +1,9 @@
 package com.example.serhio.substantiv;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -20,138 +22,127 @@ import com.example.serhio.substantiv.entities.GenderConstants;
 import com.example.serhio.substantiv.entities.Locales;
 import com.example.serhio.substantiv.entities.Quiz;
 import com.example.serhio.substantiv.entities.QuizBundleHelper;
-import com.example.serhio.substantiv.entities.QuizKeys;
-import com.example.serhio.substantiv.logic.DefaultScenario;
-import com.example.serhio.substantiv.logic.HardestScenario;
-import com.example.serhio.substantiv.logic.QuizManager;
-import com.example.serhio.substantiv.logic.ShuffleScenario;
-
+import com.example.serhio.substantiv.behavior.DefaultScenario;
+import com.example.serhio.substantiv.behavior.HardestScenario;
+import com.example.serhio.substantiv.behavior.ShuffleScenario;
+/*
+ * The main class. The only activity.
+ * Navigation in the application is carried out by replacing the current fragment with a new fragment.
+ */
 public class MainActivity extends AppCompatActivity implements QuizFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener, StartFragment.OnFragmentInteractionListener {
 
     private String TAG = "Rhemax";
     private String CURRENT_QUIZ_ID_KEY = "currentQuizID";
     private String CHANGE_DELAY_KEY = "changeDelay";
-    DrawerLayout mDrawerLayout;
-    Runnable runnable;
+    private DrawerLayout mDrawerLayout;
     private QuizManager quizManager;
     private QuizFragment quizFragment;
     private Handler handler;
+    private Locales currentLocale;
     private int changeDelay;
-    private Locales locale = Locales.RU;
     private Runnable changeQuizRunnable;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // if (savedInstanceState != null) return;
 
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         handler = new Handler();
-/*
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionbar.setDisplayHomeAsUpEnabled(true);
 
-        setNavigationListener();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-        if (savedInstanceState != null) {
-            return;
-        }
+        if (savedInstanceState != null) return;
 
         StartFragment startFragment = StartFragment.newInstance();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.container, startFragment);
-        ft.commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.container, startFragment);
+        fragmentTransaction.commit();
     }
 
-
-    //TODO optimize!!!
-    public void next() {
-       changeQuizRunnable =  new Runnable() {
+    public void showNextQuiz() {
+        changeQuizRunnable = new Runnable() {
             @Override
             public void run() {
-                Quiz quiz = quizManager.getNext();
-             /*   if (quiz == null) {
-                    return;
-                }*/
-                // Log.d(TAG, "Main, falsesCount: " + quizManager.getFalsesCount());
+                Quiz quiz = quizManager.getNextQuiz();
                 QuizBundleHelper helper = new QuizBundleHelper();
                 Bundle bundle = helper.createBundle()
-                        .withGender(quizManager.getGender())
-                        .withName(quizManager.getName())
-                        .withTranslation(quizManager.getTranslation())
-                        .withRule(quizManager.getRule())
-                        .withScore(quizManager.getScore())
-                        // .withShowAnswerState(quizManager.showScore())
+                        .withGender(quiz.getGender())
+                        .withName(quiz.getName())
+                        .withTranslation(quiz.getTranslation(currentLocale))
+                        .withRule(quiz.getRule())
+                        .withScore(quiz.getScore())
                         .asBundle();
 
                 try {
                     quizFragment.changeQuiz(handler, this, bundle);
 
-                } catch (NullPointerException exception){
-                    Log.d(TAG, "Main, ooops. Exception!!!");
+                } catch (NullPointerException exception) {
+                    Log.d(TAG, "An error is occured. Can't show new Quiz.");
                 }
             }
         };
         handler.postDelayed(changeQuizRunnable, changeDelay);
     }
 
+    // Handling a click on the game option menu (StartFragment)
     public void menuButtonClick(int resourceId) {
-        clearAllViews();
         changeDelay = 0;
+        currentLocale = getCurrentLocale();
 
         switch (resourceId) {
 
-            case R.id.learn_card_view: {
+            case R.id.learn_button: {
 
                 quizManager = new QuizManager(this, new DefaultScenario(this));
                 quizFragment = new ScoreQuizFragment();
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                fragmentTransaction.replace(R.id.container, quizFragment);
-                fragmentTransaction.addToBackStack(null).commit();
-                // fragmentTransaction.commit();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, quizFragment).
+                        addToBackStack(null).
+                        commit();
 
-                next();
+                showNextQuiz();
 
-                changeDelay = quizManager.getDelay();
+                changeDelay = getDelay();
 
                 break;
             }
 
-            case R.id.shuffle_card_view: {
+            case R.id.shuffle_button: {
                 quizManager = new QuizManager(this, new ShuffleScenario(this));
                 quizFragment = new QuizFragment();
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, quizFragment);
                 fragmentTransaction.addToBackStack(null).commit();
-                next();
-                changeDelay = quizManager.getDelay();
+                showNextQuiz();
+                changeDelay = getDelay();
                 break;
             }
 
-            case R.id.hardest_card_view: {
+            //TODO Implement the algorithm for displaying the most difficult words
+            case R.id.hardest_button: {
                 quizManager = new QuizManager(this, new HardestScenario(this));
-                if (quizManager.getQuizCount() == 0) {
-                    Toast.makeText(getApplicationContext(), "Sorry. The list is empty", Toast.LENGTH_LONG).show();
+                int minCount = 10;
+                if (quizManager.getQuizCount() < minCount) {
+                    Toast.makeText(getApplicationContext(), "Not enough complicated words to display.  At least " + minCount + " words required", Toast.LENGTH_LONG).show();
                     break;
-                } else {                    Log.d(TAG, "ELSE!!! Sorry. The list is empty");
-
+                } else {
                     quizFragment = new QuizFragment();
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.container, quizFragment);
                     fragmentTransaction.addToBackStack(null).commit();
-                    next();
-                    changeDelay = quizManager.getDelay();
-
+                    showNextQuiz();
+                    changeDelay = getDelay();
                 }
                 break;
             }
@@ -172,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (runnable != null) handler.removeCallbacks(runnable);
+        if (changeQuizRunnable != null) handler.removeCallbacks(changeQuizRunnable);
         if (quizManager != null) {
             quizManager.closeDatabase();
         }
@@ -180,11 +171,11 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        clearAllViews();
+        //clearAllViews();
         int id = item.getItemId();
-        FragmentManager fm = getSupportFragmentManager();
-        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (id) {
             case R.id.game_menu_item: {
@@ -217,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
             }
 
             case R.id.progress_menu_item: {
-                //int[] data = {22, 22, 120, 22, 86};
                 quizManager = new QuizManager(this, new DefaultScenario(this));
                 int[] data = quizManager.getStatistics();
                 ProgressFragment progressFragment = ProgressFragment.newInstance(data);
@@ -232,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
         return false;
     }
 
+// Processing and saving user response. Returns true if the answer is correct and false if the answer is incorrect.
     public boolean answered(int id) {
 
         boolean isRight = false;
@@ -256,12 +247,7 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
             }
 
         }
-
-        int score = quizManager.getScore();
-        Bundle arguments = quizFragment.getArguments();
-        arguments.putInt(QuizKeys.SCORE, score);
-        quizFragment.update(arguments);
-        next();
+        showNextQuiz();
 
         return isRight;
     }
@@ -271,9 +257,36 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
         layout.removeAllViews();
     }
 
-    private void setNavigationListener() {
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    private Locales getCurrentLocale() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String localeKey = getResources().getString(R.string.locale_key);
+        Locales currentLocale = null;
+        String defaultLocaleKey = "en";
+        String currentLocales = preferences.getString(localeKey, defaultLocaleKey);
+        switch (currentLocales) {
+            case "en": {
+                currentLocale = Locales.EN;
+                break;
+            }
+            case "ru": {
+                currentLocale = Locales.RU;
+                break;
+            }
+
+            case "ro": {
+                currentLocale = Locales.RO;
+                break;
+            }
+        }
+        return currentLocale;
+    }
+
+    // Return change delay between Quiz's in milliseconds.
+    public int getDelay() {
+        String changeSpeedKey = getResources().getString(R.string.change_speed);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int quizChangeDelay = Integer.parseInt(preferences.getString(changeSpeedKey, "2"));
+        return quizChangeDelay * 1000;
     }
 
     @Override
@@ -291,32 +304,11 @@ public class MainActivity extends AppCompatActivity implements QuizFragment.OnFr
         int currentQuizID = savedInstanceState.getInt(CURRENT_QUIZ_ID_KEY);
         changeDelay = savedInstanceState.getInt(CHANGE_DELAY_KEY);
         quizManager.setCurrentQuiz(currentQuizID);
-        //QuizFragment originalQuizFragment = (QuizFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-        //  Log.d(TAG, "Main, onRestoreState, quizFragment is null: " + (originalQuizFragment == null));
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
         if (fragment instanceof QuizFragment)
             quizFragment = (QuizFragment) fragment;
     }
-/*
-    private Boolean exit = false;
-    @Override
-    public void onBackPressed() {
-        if (exit) {
-            finish(); // finish activity
-        } else {
-            Toast.makeText(this, "Press Back again to Exit.",
-                    Toast.LENGTH_SHORT).show();
-            exit = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    exit = false;
-                }
-            }, 3 * 1000);
 
-        }
-
-    }*/
 
 /*    @Override
     public void onBackPressed() {

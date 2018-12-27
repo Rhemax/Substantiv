@@ -1,4 +1,4 @@
-package com.example.serhio.substantiv.entities;
+package com.example.serhio.substantiv;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,14 +7,10 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.serhio.substantiv.DatabaseAssetHelper;
-import com.example.serhio.substantiv.R;
 
-
-public class MyDialogPreference extends DialogPreference implements DialogInterface.OnClickListener {
+public class MyDialogPreference extends DialogPreference {
 
     public MyDialogPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -23,8 +19,6 @@ public class MyDialogPreference extends DialogPreference implements DialogInterf
 
     }
 
-    //TODO optimize reset toast message
-    //TODO Optimize UI updating from Thread
     @Override
     protected void onClick() {
         Resources resources = getContext().getResources();
@@ -41,20 +35,12 @@ public class MyDialogPreference extends DialogPreference implements DialogInterf
         dialog.setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //reset database
-
-                Log.d("Rhemax", "MyDialogPreference onclick - clicked YES");
-
-
                 Handler handler = new Handler();
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                       /* DatabaseHelper dbHelper = DatabaseHelper.getInstance(getContext());
-                        dbHelper.resetAll();
-                        Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();*/
-                        DatabaseAssetHelper dbAssetHelper = new DatabaseAssetHelper(getContext());
+                        DBAssetHelper dbAssetHelper = new DBAssetHelper(getContext());
                         dbAssetHelper.resetAll();
                         Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
                     }
@@ -66,8 +52,6 @@ public class MyDialogPreference extends DialogPreference implements DialogInterf
         dialog.setNegativeButton(negativeButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dlg, int which) {
-                Log.d("Rhemax", "MyDialogPreference onclick - clicked NO");
-
                 dlg.cancel();
             }
         });
@@ -75,19 +59,6 @@ public class MyDialogPreference extends DialogPreference implements DialogInterf
         AlertDialog al = dialog.create();
         al.show();
     }
-
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-/*        Log.d("Rhemax", "MyDialogPreference onclick - whitout if-else");
-
-        if (which == DialogInterface.BUTTON_POSITIVE) {
-            Log.d("Rhemax", "MyDialogPreference onclick - clicked YES");
-        } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-            Log.d("Rhemax", "MyDialogPreference onclick - clicked NO");
-        }*/
-    }
-
 
 }
 

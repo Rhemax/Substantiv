@@ -1,30 +1,23 @@
-package com.example.serhio.substantiv.logic;
+package com.example.serhio.substantiv;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.example.serhio.substantiv.DatabaseAssetHelper;
 import com.example.serhio.substantiv.entities.Quiz;
 import com.example.serhio.substantiv.entities.Substantiv;
+import com.example.serhio.substantiv.behavior.Scenario;
+import com.example.serhio.substantiv.behavior.ShuffleScenario;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Serhio on 27.03.2018.
- */
 
 public class DBManager {
     private Context context;
-    private DatabaseHelper dbhelper;
-    private DatabaseAssetHelper dbAssetHelper;
+    private DBAssetHelper dbAssetHelper;
 
     public DBManager(Context context) {
-        this.context = context;/*
-        dbhelper = DatabaseHelper.getInstance(context);
-        dbhelper.openDataBase();*/
-        dbAssetHelper = new DatabaseAssetHelper(context);
+        this.context = context;
+        dbAssetHelper = new DBAssetHelper(context);
     }
 
     public List<Quiz> getQuizList(Scenario scenario) {
@@ -40,22 +33,22 @@ public class DBManager {
 
     private List<Substantiv> getSubstantivs(Scenario scenario) {
         String request = scenario.getSubstantivListSQLRequest();
-        //  List<Substantiv> substList = dbhelper.getSubstantivList(request);
         List<Substantiv> substList = dbAssetHelper.getSubstantivList(request);
 
         return substList;
     }
 
     public Quiz getQuiz(String sqlRequest) {
-       // Substantiv substantiv = dbhelper.getSubstantiv(sqlRequest);
         Substantiv substantiv = dbAssetHelper.getSubstantiv(sqlRequest);
 
         return new Quiz(substantiv);
     }
 
-    public int[] getStatistic(){
-      List<Quiz> substantivs =  getQuizList(new ShuffleScenario(context));
-      int[] data = new int[5];
+    //Returns the statistics of learned words in the form of an array in the following form:
+    // [learnded words, three stars words, two stars words, one star words, to learn words]
+    public int[] getStatistic() {
+        List<Quiz> substantivs = getQuizList(new ShuffleScenario(context));
+        int[] data = new int[5];
         for (Quiz quiz : substantivs) {
             int score = quiz.getScore();
 
@@ -82,27 +75,20 @@ public class DBManager {
                 }
             }
         }
-        Log.d("Rhemax", "DBManager, statistic: list.size: " + substantivs.size() + "learned-" + data[0] + "; three-" + data[1] + "; two-" + data[2] + "; one-" + data[3] + "; to learn-" + data[4]);
         return data;
     }
 
     public void save(Quiz currentQuiz) {
-        int id = currentQuiz.getId();
-        int score = currentQuiz.getScore();
-        int answerCount = currentQuiz.getAnswerCount();
-        //dbhelper.update(id, score, ++answerCount);
-       // dbAssetHelper.update(id, score, ++answerCount);
         dbAssetHelper.update(currentQuiz);
     }
 
+    //TODO Implement reset function
     public void resetAll() {
-        // dbhelper.resetAll();
         dbAssetHelper.resetAll();
     }
 
 
     public void closeDatabase() {
-        // if (dbhelper != null) dbhelper.close();
         if (dbAssetHelper != null) dbAssetHelper.close();
     }
 }

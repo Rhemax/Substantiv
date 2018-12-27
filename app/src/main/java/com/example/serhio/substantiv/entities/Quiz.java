@@ -1,9 +1,5 @@
 package com.example.serhio.substantiv.entities;
 
-/**
- * Created by Serhio on 27.03.2018.
- */
-
 public class Quiz {
     private Substantiv substantiv;
 
@@ -12,10 +8,6 @@ public class Quiz {
     }
 
     public String getGender() {
-        return substantiv.getGender();
-    }
-
-    public String getResponse() {
         return substantiv.getGender();
     }
 
@@ -31,7 +23,7 @@ public class Quiz {
         return substantiv.getRule().getRule();
     }
 
-    public String getTranslation(Locales locale){
+    public String getTranslation(Locales locale) {
         return substantiv.getTranslation(locale);
     }
 
@@ -51,28 +43,17 @@ public class Quiz {
         substantiv.setAnswersCount(count);
     }
 
-    public void setFalsesCount(int count) { substantiv.setFalsesResponsesCount(count);}
+    public void setFalsesCount(int count) {
+        substantiv.setFalseResponsesCount(count);
+    }
 
-    public int getFalsesCOunt() { return substantiv.getFalsesResponsesCount();}
+    public int getFalsesCount() {
+        return substantiv.getFalseResponsesCount();
+    }
 
     public int getId() {
         return substantiv.getId();
     }
 
-    public boolean isFavorite() {
-        return substantiv.isFavorite();
-    }
-
-    public void setFavorite(boolean isFavorite) {
-        substantiv.setFavorite(isFavorite);
-    }
-
-    public void setAnswer(boolean answer) {
-        int score = substantiv.getScore();
-        if (answer) substantiv.setScore(score++);
-        else substantiv.setScore(score--);
-
-        int answerCount = substantiv.getAnswersCount();
-        substantiv.setAnswersCount(answerCount++);
-    }
 }
+

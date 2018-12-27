@@ -1,9 +1,13 @@
-package com.example.serhio.substantiv.logic;
+package com.example.serhio.substantiv.behavior;
 
 import android.content.Context;
 
 import com.example.serhio.substantiv.entities.ConstantsSQL;
 import com.example.serhio.substantiv.entities.Quiz;
+
+    /*
+    Study of all available words in random order. Points are not awarded.
+    */
 
 public class ShuffleScenario extends Scenario {
 
@@ -32,8 +36,4 @@ public class ShuffleScenario extends Scenario {
         return null;
     }
 
-    @Override
-    public boolean showScore(){
-        return false;
-    }
 }

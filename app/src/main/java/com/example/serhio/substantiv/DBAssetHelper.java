@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.example.serhio.substantiv.entities.ConstantsSQL;
@@ -16,14 +15,16 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class DatabaseAssetHelper extends SQLiteAssetHelper {
+/*
+* The class that accesses the database.
+* */
+public class DBAssetHelper extends SQLiteAssetHelper {
     private static final String DATABASE_NAME = "substantiv.db";
     private static final int DATABASE_VERSION = 1;
     private static String TAG = "Rhemax";
     private SQLiteDatabase mDataBase;
 
-    public DatabaseAssetHelper(Context context) {
+    public DBAssetHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mDataBase = getWritableDatabase();
     }
@@ -46,7 +47,7 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
                 substantiv.setExplanation(cursor.getString(4));
                 substantiv.setRuleId(cursor.getInt(5));
                 int ruleId = cursor.getInt(5);
-                //TODO Optimize!!!
+
                 for (Rule rule : rules) {
                     if (rule.getId() == ruleId) {
                         substantiv.setRule(rule);
@@ -58,18 +59,17 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
                     substantiv.setRule(rule);
                 }
                 substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
-                substantiv.setFrequenceRate(cursor.getInt(7));
+                substantiv.setFrequencyRate(cursor.getInt(7));
                 substantiv.setAnswersCount(cursor.getInt(8));
-                substantiv.setFalsesResponsesCount(cursor.getInt(9));
+                substantiv.setFalseResponsesCount(cursor.getInt(9));
                 substantiv.setScore(cursor.getInt(10));
                 substantiv.addTranslation(Locales.EN, cursor.getString(11));
                 substantiv.addTranslation(Locales.RU, cursor.getString(12));
                 substantiv.addTranslation(Locales.RO, cursor.getString(13));
                 substantivs.add(substantiv);
-              //  Log.d("Rhemax", "DatabaseAssetHelper, En: " + substantiv.getTranslation(Locales.EN)+ ", Ru: " + substantiv.getTranslation(Locales.RU) + ", Ro: " + substantiv.getTranslation(Locales.RO));
             } while (cursor.moveToNext());
 
-        };
+        }
         cursor.close();
         return substantivs;
     }
@@ -77,7 +77,7 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
     public List<Rule> getRuleList() {
         List<Rule> ruleList = new ArrayList<>();
 
-        Cursor cursor = mDataBase.rawQuery("select * from ruleTable", null);
+        Cursor cursor = mDataBase.rawQuery("SELECT * FROM ruleTable", null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -105,7 +105,7 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
             substantiv.setExplanation(cursor.getString(4));
             substantiv.setRuleId(cursor.getInt(5));
             int ruleId = cursor.getInt(5);
-            //TODO Optimize!!!
+
             List<Rule> rules = getRuleList();
 
             for (Rule rule : rules) {
@@ -119,62 +119,26 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
                 substantiv.setRule(rule);
             }
             substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
-            substantiv.setFrequenceRate(cursor.getInt(7));
+            substantiv.setFrequencyRate(cursor.getInt(7));
             substantiv.setAnswersCount(cursor.getInt(8));
-            substantiv.setFalsesResponsesCount(cursor.getInt(9));
+            substantiv.setFalseResponsesCount(cursor.getInt(9));
             substantiv.setScore(cursor.getInt(10));
             substantiv.addTranslation(Locales.EN, cursor.getString(11));
             substantiv.addTranslation(Locales.RU, cursor.getString(12));
             substantiv.addTranslation(Locales.RO, cursor.getString(13));
-/*            substantiv.setId(cursor.getInt(0));
-            substantiv.setName(cursor.getString(1));
-            substantiv.setGender(cursor.getString(2));
-            substantiv.setPluralForm(cursor.getString(3));
-            substantiv.setExplanation(cursor.getString(4));
-            substantiv.setRuleId(cursor.getInt(5));
-            int ruleId = cursor.getInt(5);
-            //TODO Optimize!!!
-            ArrayList<Rule> rules = new ArrayList<>();
-            for (Rule rule : rules) {
-                if (rule.getId() == ruleId) {
-                    substantiv.setRule(rule);
-                    //   Log.d("Rhemax", "Rule.getiId = "+ rule.getId() + ", ruleId = " + ruleId + ": Substantivul: " + substantiv.getName() + ", Adaug regula: " + rule.getRule());
-                }
-            }
-            if (substantiv.getRule() == null) {
-                Rule rule = new Rule();
-                rule.setRule("No sugestions");
-                substantiv.setRule(rule);
-            }
-            substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
-            substantiv.setFrequenceRate(cursor.getInt(7));
-            substantiv.setAnswersCount(cursor.getInt(8));
-            substantiv.setScore(cursor.getInt(9));*/
-        } else Log.d(TAG, "DatabaseHelper, getQuiz: cursor is empty");
+        } else Log.d(TAG, "DBAssetHelper, getQuiz: cursor is empty");
         cursor.close();
         return substantiv;
-    }
-
-    public void update(int id, int score, int answerCount) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(ConstantsSQL.SCORE, score);
-        contentValues.put(ConstantsSQL.ANSWERS_COUNT, answerCount);
-        String WHERE = ConstantsSQL.ID + "=" + id;
-        int updatedRow = mDataBase.update(ConstantsSQL.SUBSTANTIV_TABLE, contentValues, WHERE, null);
-      //  Log.d(TAG, "DatabaseAssetHelper, 3 params method: updated rows: " + updatedRow);
     }
 
     public void update(Quiz quiz) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ConstantsSQL.SCORE, quiz.getScore());
         contentValues.put(ConstantsSQL.ANSWERS_COUNT, quiz.getAnswerCount());
-        contentValues.put(ConstantsSQL.FALSES_COUNT, quiz.getFalsesCOunt());
-        String WHERE = ConstantsSQL.ID + "=" + quiz.getId();
-        int updatedRow = mDataBase.update(ConstantsSQL.SUBSTANTIV_TABLE, contentValues, WHERE, null);
-        //Log.d(TAG, "DatabaseAssetHelper, Quiz params method: updated rows: " + updatedRow);
+        contentValues.put(ConstantsSQL.FALSES_COUNT, quiz.getFalsesCount());
     }
 
-    //todo optimize updatedCount - should be -1 and not -2
+    // Reset all current progress.
     public boolean resetAll() {
         //Random negativ counter for checking of update execution (!= (-1...+maxInt))
         int updatedCount = -2;
@@ -186,9 +150,6 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
         String WHERE = ConstantsSQL.ANSWERS_COUNT + ">" + 0;
 
         updatedCount = mDataBase.update(ConstantsSQL.SUBSTANTIV_TABLE, contentValues, WHERE, null);
-     /*   mDataBase.rawQuery("UPDATE " + ConstantsSQL.SUBSTANTIV_TABLE + " SET "
-                + ConstantsSQL.SCORE + "=0, " + ConstantsSQL.ANSWERS_COUNT + "=0"
-                + " WHERE " + ConstantsSQL.ANSWERS_COUNT + ">0", null);*/
         boolean isUpdated = (updatedCount != -2) ? true : false;
         return isUpdated;
     }

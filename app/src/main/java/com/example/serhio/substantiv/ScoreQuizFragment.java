@@ -12,18 +12,16 @@ import android.widget.LinearLayout;
 
 import com.example.serhio.substantiv.entities.QuizKeys;
 
-
+/*
+ * Fragment responsible for showing tests. The test is shown along without the score.
+ */
 public class ScoreQuizFragment extends QuizFragment {
 
     private LinearLayout scoreContainer;
-    private ImageView scoreIconView;
-    private boolean showScore;
-
 
     public ScoreQuizFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -39,7 +37,6 @@ public class ScoreQuizFragment extends QuizFragment {
     protected void populateNewCardView(View toPopulateView) {
         super.populateNewCardView(toPopulateView);
         scoreContainer = toPopulateView.findViewById(R.id.score_container);
-        scoreIconView = toPopulateView.findViewById(R.id.scoreIcon);
         int score = getArguments().getInt(QuizKeys.SCORE);
         updateScoreView(score);
     }
@@ -54,17 +51,9 @@ public class ScoreQuizFragment extends QuizFragment {
         clearButtonsClickListener();
     }
 
-    @Override
-    public void update(Bundle bundle) {
-        int score = bundle.getInt(QuizKeys.SCORE);
-        getArguments().putInt(QuizKeys.SCORE, score);
-        updateScoreView(score);
-    }
-
     //TODO optimize and clean code
     private void updateScoreView(int score) {
         scoreContainer.removeAllViews();
-       // if (showScore) {
         if (true) {
             for (int x = 0; x < score; x++) {
                 ImageView scoreImage = new ImageView(getContext());

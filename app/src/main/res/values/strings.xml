@@ -1,18 +1,18 @@
 <resources>
-    <string name="app_name">Substantiv</string>
-    <string name="action_settings">Settings</string>
-    <string name="game">Game</string>
+<string name="app_name">Substantiv</string>
+<string name="action_settings">Settings</string>
+<string name="game">Game</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="substantiv">Substantiv</string>
-    <string name="rule">Rule</string>
-    <string name="der">Der</string>
-    <string name="die">Die</string>
-    <string name="das">Das</string>
-    <string name="terminations">Terminations</string>
+<!-- TODO: Remove or change this placeholder text -->
+<string name="substantiv" translatable="false">Substantiv</string>
+<string name="rule">Rule</string>
+<string name="der" translatable="false">Der</string>
+<string name="die" translatable="false">Die</string>
+<string name="das" translatable="false">Das</string>
+<string name="terminations">Terminations</string>
 
 
-    <string name="der_rules">
+<string name="der_rules">
         - The majority of nouns which come from verbs without a suffix (but often with a vowel change).\n
         - 60% of nouns in -el and -er.\n
         - 80%  of nouns in -en.\n
@@ -22,14 +22,15 @@
         - Nouns of all seasons, months, days of the week.\n
     </string>
 
-    <string name="die_rules">
+
+<string name="die_rules">
         - Most nouns ending in -t originating from verbs.\n
         - The main part (90%) of nouns in -e.\n
         - Nouns derived from adjectives with the suffix -nis.\n
         - Female humans (and their professions) and female animals.\n
     </string>
 
-    <string name="das_rules">
+<string name="das_rules">
         - 90% of the nouns with the prefix "Ge-".\n
         - Chemical terms which end in "-in" and metals.\n
         - Nouns which stem from verb infinitives.\n
@@ -39,44 +40,43 @@
         - Human babies and animal babies.\n
     </string>
 
-    <string name="der_terminations">
+<string name="der_terminations">
         -ant, -ast, -ich, -ig, -ismus, -ling, -or, -us.
     </string>
 
-    <string name="die_terminations">
+<string name="die_terminations">
         -a, -anz, -ei, -enz, -heit, -ie, -ik, -keit, -schaft, -sion, -tät, -tion, -ung, -ur, -in (when it comes to female humans (and their professions) and female animals).
     </string>
 
-    <string name="das_terminations">
+<string name="das_terminations">
         -chen, -lein, -ma, -ment, -sel, -tel, -tum, -um.
     </string>
 
-    <string name="male">Male - \"der\"</string>
-    <string name="feminine">Feminine - \"die\"</string>
-    <string name="neuter">Neuter - \"das\"</string>
-    <string name="change_speed">change_speed</string>
-    <string name="speed">Speed</string>
-    <string name="locale_key">language</string>
-    <string name="change_language">Language</string>
+<string name="male">Male - \"der\"</string>
+<string name="feminine">Feminine - \"die\"</string>
+<string name="neuter">Neuter - \"das\"</string>
+<string name="change_speed">change_speed</string>
+<string name="speed">Speed</string>
+<string name="locale_key" translatable="false">language</string>
     <string name="default_speed">2</string>
-    <string name="default_language">en</string>
-    <string name="select_language">Select language</string>
     <string name="reset_message">Are you sure that you wont reset the application to default settings?</string>
-    <string name="reset_dialog_title">Reset all settings</string>
-    <string name="positive_button_text">Reset application</string>
-    <string name="negative_button_text">Cancel</string>
-    <string name="reset_toast_message">Application reset!</string>
-    <string name="rules">Rules</string>
-    <string name="default_max_score_key">default_max_score</string>
-    <string name="default_quiz_count_key">default_quiz_count</string>
-    <string name="shuffle_quiz_count_key">shuffle_quiz_count</string>
-    <string name="score_quiz_record_key">score_quiz_record</string>
-    <string name="shuffle_quiz_record_key">shuffle_quiz_record</string>
+<string name="reset_dialog_title">Reset all settings</string>
+<string name="positive_button_text">Reset application</string>
+<string name="negative_button_text">Cancel</string>
+<string name="reset_toast_message">Application reset!</string>
+<string name="rules">Rules</string>
+<string name="default_max_score_key">default_max_score</string>
+<string name="default_quiz_count_key">default_quiz_count</string>
+<string name="shuffle_quiz_count_key">shuffle_quiz_count</string>
+<string name="score_quiz_record_key">score_quiz_record</string>
+<string name="shuffle_quiz_record_key">shuffle_quiz_record</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+<!-- TODO: Remove or change this placeholder text -->
     <string name="progress">Progress</string>
-    <string name="score_quiz_record_value">0</string>
-    <string name="shuffle_quiz_record_value">0</string>
+<string name="score_quiz_record_value">0</string>
+<string name="shuffle_quiz_record_value">0</string>
+<string name="learn">LEARN</string>
+<string name="shuffle">SHUFFLE</string>
+<string name="hardest">HARDEST</string>
 
 </resources>

@@ -5,10 +5,9 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 
-import com.example.serhio.substantiv.helper.LocaleHelper;
-
 
 public class PrefsFragment extends PreferenceFragmentCompat {
+
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -29,14 +28,4 @@ public class PrefsFragment extends PreferenceFragmentCompat {
         }
     }
 
-
-
-/*    @Override
-    public void onDisplayPreferenceDialog(Preference preference) {
-        if (preference instanceof MyDialogPreference) {
-            DialogFragment dialogFragment = DialogPrefFragCompat.newInstance(preference.getKey());
-            dialogFragment.setTargetFragment(this, 0);
-            dialogFragment.show(getFragmentManager(), null);
-        } else super.onDisplayPreferenceDialog(preference);
-    }*/
 }

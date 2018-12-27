@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+<!--
     <ListPreference
         android:key="@string/locale_key"
         android:defaultValue="@string/default_language"
@@ -9,7 +9,7 @@
         android:entries="@array/language_names"
         android:entryValues="@array/language_values"
         android:summary="%s"
-        android:title="@string/change_language" />
+        android:title="@string/change_language" />-->
 
     <ListPreference
         android:key="@string/change_speed"
@@ -20,7 +20,7 @@
         android:summary="%s"
         android:title="@string/speed" />
 
-    <com.example.serhio.substantiv.entities.MyDialogPreference android:title="Reset all settings" />
+    <com.example.serhio.substantiv.MyDialogPreference android:title="Reset all settings" />
 
     <ListPreference
         android:defaultValue="@integer/default_max_score"

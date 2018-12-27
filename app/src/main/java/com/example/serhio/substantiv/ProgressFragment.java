@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 
 public class ProgressFragment extends Fragment {
-    private Drawable oneStarDrawable;
     private final static String ZERO_STARS = "zeroStars";
     private final static String ONE_STAR = "oneStar";
     private final static String TWO_STARS = "twoStars";
@@ -32,8 +31,6 @@ public class ProgressFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    //int[] data = must have 5 integers that indicate count of stars of word
     public static ProgressFragment newInstance(int[] data) {
         ProgressFragment fragment = new ProgressFragment();
         Bundle args = new Bundle();
@@ -67,7 +64,6 @@ public class ProgressFragment extends Fragment {
 
     private void populateChart(PieChart pieChart) {
         pieChart.setUsePercentValues(true);
-        oneStarDrawable = getResources().getDrawable(R.drawable.star_gold);
 
         ArrayList<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(getArguments().getInt(FOUR_STARS), ""));
@@ -78,7 +74,6 @@ public class ProgressFragment extends Fragment {
 
         PieDataSet dataSet = new PieDataSet(entries, null);
         dataSet.setColors(getResources().getColor(R.color.blue), getResources().getColor(R.color.pink), getResources().getColor(R.color.green), getResources().getColor(R.color.yellow), getResources().getColor(R.color.grey));
-       // dataSet.setSliceSpace(1f);
         dataSet.setSliceSpace(0);
         dataSet.setDrawValues(false);
 
@@ -129,7 +124,6 @@ public class ProgressFragment extends Fragment {
         String[] labels = {"Learned", "Three stars", "Two stars", "One star", "To learn"};
         for (int i = 0; i < 5; i++) {
             LegendEntry legendEntry = new LegendEntry();
-           // legendEntry.label = "first" + i;
             legendEntry.label = labels[i];
             legendEntry.formColor = colors[i];
             legendEntryes.add(legendEntry);

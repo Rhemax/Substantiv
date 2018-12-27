@@ -1,16 +1,15 @@
-package com.example.serhio.substantiv.logic;
+package com.example.serhio.substantiv.behavior;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.example.serhio.substantiv.R;
 import com.example.serhio.substantiv.entities.Quiz;
 
 /*
-* The class that set the Quiz behavior and get the SQL Requests for forming a quizList
-* */
+ * The class that set the Quiz behavior and get the SQL Requests for forming a quizList
+ * */
 
 
 public abstract class Scenario {
@@ -21,7 +20,6 @@ public abstract class Scenario {
     protected static String ASC = " ASC ";
     protected static String DESC = " DESC ";
     protected String locale;
-    //TODO Optimize MaxScore set
     protected Context context;
     protected SharedPreferences preferences;
 
@@ -47,15 +45,4 @@ public abstract class Scenario {
     //Return a new SQL Request from SQL Database that past to Scenario criteria for getting a new Quiz object
     public abstract String getNext();
 
-
-    //todo move method to an specialized class. This class is only for sql methods
-    //Return delay between next Quiz show in seconds
-    public int getDelay() {
-        String changeSpeed = context.getResources().getString(R.string.change_speed);
-        int quizChangeDelay = Integer.parseInt(preferences.getString(changeSpeed, "2"));
-        return quizChangeDelay;
-    }
-
-    //TODO delete this method
-    public abstract boolean showScore();
 }

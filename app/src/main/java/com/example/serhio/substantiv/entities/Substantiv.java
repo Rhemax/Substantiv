@@ -13,11 +13,11 @@ public class Substantiv {
     private Rule rule;
     private int ruleId;
     private boolean isFavorite;
-    private int frequenceRate;
+    private int frequencyRate;
     private int answersCount;
     private int score;
     private Translation translations;
-    private int falsesResponsesCount;
+    private int falseResponsesCount;
 
     public Substantiv() {
         translations = new Translation();
@@ -61,10 +61,6 @@ public class Substantiv {
         this.ruleId = ruleId;
     }
 
-    public void setSubstantivName(String name) {
-        this.name = name;
-    }
-
     public String getGender() {
         return gender;
     }
@@ -105,12 +101,12 @@ public class Substantiv {
         isFavorite = favorite;
     }
 
-    public int getFrequenceRate() {
-        return frequenceRate;
+    public int getFrequencyRate() {
+        return frequencyRate;
     }
 
-    public void setFrequenceRate(int frequenceRate) {
-        this.frequenceRate = frequenceRate;
+    public void setFrequencyRate(int frequencyRate) {
+        this.frequencyRate = frequencyRate;
     }
 
     public int getAnswersCount() {
@@ -131,18 +127,18 @@ public class Substantiv {
 
     @Override
     public String toString() {
-        return "Frequency: " + frequenceRate
+        return "Frequency: " + frequencyRate
                 + ", Name: " + name
                 + ", Gender: " + gender
                 + ", Plural form: " + pluralForm;
     }
 
-    public int getFalsesResponsesCount() {
-        return falsesResponsesCount;
+    public int getFalseResponsesCount() {
+        return falseResponsesCount;
     }
 
-    public void setFalsesResponsesCount(int falsesResponsesCount) {
-        this.falsesResponsesCount = falsesResponsesCount;
+    public void setFalseResponsesCount(int falseResponsesCount) {
+        this.falseResponsesCount = falseResponsesCount;
     }
 
 

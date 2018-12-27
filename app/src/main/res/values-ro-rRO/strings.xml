@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="learn">Invata</string>
+    <string name="action_settings">Setari</string>
+    <string name="game">Joc</string>
+    <string name="rule">Regula</string>
+    <string name="rules">Reguli</string>
+    <string name="negative_button_text">Anuleaza</string>
+    <string name="positive_button_text">Reseteaza aplicatia</string>
+    <string name="reset_dialog_title">Reseteaza toate setarile</string>
+    <string name="reset_message">Sunteti sigur ca doritisa resetati aplicatia?</string>
+    <string name="progress">Progresul</string>
+    <string name="hardest">CELE MAI GRELE</string>
+    <string name="shuffle">INTIMPLATOR</string>
+
+
+    <string name="der_rules">
+        - Cea mai mare parte a substantivelor ce provin din verbe fara sufix (in unele cazur cu modificarea vocalei).\n
+        - 60% din substantive cu terminatia in -el sau -er.\n
+        - 80%  din substantive cu terminatia in -en.\n
+        - 67% din substantive monosilabice (restul 19% sunt neutre, iar 14% feminine).\n
+        - Substantivele cu terminatia "-er" provenite din verb.\n
+        - Creaturi umane mascule (si profesiile acestora) si animale mascule.\n
+        - Toate anotimpurile, lunile, zilele saptaminii.\n
+    </string>
+    <string name="substantiv" translatable="false">Substantiv</string>
+    <string name="terminations">Terminatii</string>
+
+</resources>

@@ -9,7 +9,7 @@
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/shuffle_card_view"
+        android:id="@+id/shuffle_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="0dp"

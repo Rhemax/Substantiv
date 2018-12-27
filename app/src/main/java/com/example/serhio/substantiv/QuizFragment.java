@@ -23,6 +23,9 @@ import android.widget.TextView;
 
 import com.example.serhio.substantiv.entities.QuizKeys;
 
+/*
+ * Fragment responsible for showing tests. The test is shown along with the score.
+ */
 public class QuizFragment extends Fragment {
 
     private final static String CURRENT_ROW_SCORE = "currentRowScoreKey";
@@ -73,7 +76,6 @@ public class QuizFragment extends Fragment {
                     backgroudLayout.setBackgroundColor(getResources().getColor(R.color.greenSoft));
                     view.setBackgroundResource(R.drawable.right_antwort_button);
                 } else {
-                   // view.setBackgroundColor(Color.RED);
                     view.setBackgroundResource(R.drawable.false_antwort_button);
                     backgroudLayout.setBackgroundColor(getResources().getColor(R.color.red));
                 }
@@ -102,7 +104,6 @@ public class QuizFragment extends Fragment {
         recordView.setText("Record: " + score);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-       // String recordKey = "score_quiz_record";
         editor.putString(recordKey, String.valueOf(score));
         editor.commit();
     }
@@ -121,8 +122,6 @@ public class QuizFragment extends Fragment {
         dasButton = view.findViewById(R.id.das);
     }
 
-
-    //TODO Update clickListener adding
     protected void showNextQuiz() {
         View currentView = getView().findViewById(R.id.cardViewContainer);
         View newCardView = getNextCard();
@@ -131,6 +130,7 @@ public class QuizFragment extends Fragment {
         resetAntwortButtons();
     }
 
+    // Get new card with new quiz
     protected View getNextCard() {
         LayoutInflater inflater = getLayoutInflater();
         View newCardView = inflater.inflate(R.layout.quiz_card_view, null, false);
@@ -141,6 +141,7 @@ public class QuizFragment extends Fragment {
 
     protected void resetAntwortButtons() {
         setButtonsClickListener();
+
 
         derButton.setBackgroundResource(R.drawable.default_antwort_button);
         dieButton.setBackgroundResource(R.drawable.default_antwort_button);
@@ -153,7 +154,6 @@ public class QuizFragment extends Fragment {
         String gender = getArguments().getString(QuizKeys.GENDER);
         String rule = getArguments().getString(QuizKeys.RULE);
         String translation = getArguments().getString(QuizKeys.TRANSLATION);
-      //  Log.d("Rhemax", "QuizFrag, name: " + name + " rule: " + rule);
 
         genderTextView = toPopulateView.findViewById(R.id.gender_text_view);
         TextView substantivView = toPopulateView.findViewById(R.id.substantiv_text_view);
@@ -253,7 +253,6 @@ public class QuizFragment extends Fragment {
         }
     }
 
-    //todo anunta mainul ca detasezi fragmentul pentru a anula callbackul
     @Override
     public void onDetach() {
         super.onDetach();
@@ -261,15 +260,13 @@ public class QuizFragment extends Fragment {
         if (handler != null) handler.removeCallbacks(changeQuizRunnable);
     }
 
+    // Save current quiz data in a fragment bundle
     protected void updateBundle(Bundle bundle) {
         getArguments().clear();
         getArguments().putString(QuizKeys.GENDER, bundle.getString(QuizKeys.GENDER));
         getArguments().putString(QuizKeys.SUBSTANTIV_NAME, bundle.getString(QuizKeys.SUBSTANTIV_NAME));
         getArguments().putString(QuizKeys.TRANSLATION, bundle.getString(QuizKeys.TRANSLATION));
         getArguments().putString(QuizKeys.RULE, bundle.getString(QuizKeys.RULE));
-
-      //  Log.d("Rhemax", "QuizFragment, Subst.name: " + getArguments().get(QuizKeys.SUBSTANTIV_NAME));
-
     }
 
     @Override
@@ -299,10 +296,6 @@ public class QuizFragment extends Fragment {
             updateBundle(savedInstanceState);
             showNextQuiz();
         }
-    }
-
-    public void update(Bundle bundle) {
-
     }
 
     public interface OnFragmentInteractionListener {

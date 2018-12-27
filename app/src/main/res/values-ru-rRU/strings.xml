@@ -1,15 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Substantiv</string>
     <string name="action_settings">Настройки</string>
     <string name="game">Игра</string>
-    <string name="substantiv">Substantiv</string>
     <string name="rule">Правило</string>
-    <string name="locale_key">Язык</string>
-    <string name="change_language">Изменить язык</string>
     <string name="rules">Правила</string>
     <string name="negative_button_text">Отмена</string>
     <string name="positive_button_text">Сброить настройки</string>
     <string name="reset_dialog_title">Сброить все настройки</string>
     <string name="reset_message">Вы уверены что хотите сбросить все настройки?</string>
+    <string name="learn">Обучение</string>
+    <string name="progress">Прогресс</string>
+    <string name="shuffle">СЛУЧАЙНЫЙ</string>
+    <string name="hardest">САМЫЕ ОШИБАЕМЫЕ</string>
+    <string name="terminations">Окончания</string>
+    <string name="die_rules">Женский род</string>
+    <string name="das_rules">Средний род</string>
+    <string name="male">Мужской</string>
+    <string name="feminine">Женский</string>
+    <string name="neuter">Средний</string>
+    <string name="change_speed">Изменить скорость</string>
+    <string name="speed">Скорость</string>
+    <string name="default_speed">Скорость по умолчанию</string>
+
+    <string name="der_rules">
+        - Большая часть существительных образованных от глаголов без окончания (часто с изменением гласной).\n
+        - 60% существительных с окончаниями -el и -er.\n
+        - 80%  существительных с окончанием -en.\n
+        - 67% односложных существительгых (остальные 19% среднего и 14% женского рода).\n
+        - Существительные с окончанием "-er" происходящими от глагола.\n
+        - Самцы животных и людей (а также их профессии).\n
+        - Существительные обозначающие времена года, месяцы, дни недели.\n
+    </string>
 </resources>

@@ -1,8 +1,5 @@
 package com.example.serhio.substantiv.entities;
 
-/**
- * Created by Serhio on 27.03.2018.
- */
 
 public class GenderConstants {
 
