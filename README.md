@@ -27,6 +27,11 @@ The most difficult nouns can be learned using "The heavy" mode.
 
 I want to mention that not all German nouns have rules that help the learner understand the gender, or there are no tips to help the learner understand them, that’s, why they should be memorized by the learner, together with the article "der", "die", "das".
 
+
+# Screenshots
+![N|Solid](http://i64.tinypic.com/120th89.jpg)
+![N|Solid](http://i63.tinypic.com/hwn682.png)
+
 ### Todos
 
  - Import a personal list of nouns.
