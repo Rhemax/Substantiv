@@ -58,9 +58,9 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
                     substantiv.setRule(rule);
                 }
                 substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
-                substantiv.setFrequenceRate(cursor.getInt(7));
+                substantiv.setFrequencyRate(cursor.getInt(7));
                 substantiv.setAnswersCount(cursor.getInt(8));
-                substantiv.setFalsesResponsesCount(cursor.getInt(9));
+                substantiv.setFalseResponsesCount(cursor.getInt(9));
                 substantiv.setScore(cursor.getInt(10));
                 substantiv.addTranslation(Locales.EN, cursor.getString(11));
                 substantiv.addTranslation(Locales.RU, cursor.getString(12));
@@ -119,9 +119,9 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
                 substantiv.setRule(rule);
             }
             substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
-            substantiv.setFrequenceRate(cursor.getInt(7));
+            substantiv.setFrequencyRate(cursor.getInt(7));
             substantiv.setAnswersCount(cursor.getInt(8));
-            substantiv.setFalsesResponsesCount(cursor.getInt(9));
+            substantiv.setFalseResponsesCount(cursor.getInt(9));
             substantiv.setScore(cursor.getInt(10));
             substantiv.addTranslation(Locales.EN, cursor.getString(11));
             substantiv.addTranslation(Locales.RU, cursor.getString(12));
@@ -168,7 +168,7 @@ public class DatabaseAssetHelper extends SQLiteAssetHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ConstantsSQL.SCORE, quiz.getScore());
         contentValues.put(ConstantsSQL.ANSWERS_COUNT, quiz.getAnswerCount());
-        contentValues.put(ConstantsSQL.FALSES_COUNT, quiz.getFalsesCOunt());
+        contentValues.put(ConstantsSQL.FALSES_COUNT, quiz.getFalsesCount());
         String WHERE = ConstantsSQL.ID + "=" + quiz.getId();
         int updatedRow = mDataBase.update(ConstantsSQL.SUBSTANTIV_TABLE, contentValues, WHERE, null);
         //Log.d(TAG, "DatabaseAssetHelper, Quiz params method: updated rows: " + updatedRow);

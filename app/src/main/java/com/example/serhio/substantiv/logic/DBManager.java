@@ -6,14 +6,9 @@ import android.util.Log;
 import com.example.serhio.substantiv.DatabaseAssetHelper;
 import com.example.serhio.substantiv.entities.Quiz;
 import com.example.serhio.substantiv.entities.Substantiv;
-
+import com.example.serhio.substantiv.behavior.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-/**
- * Created by Serhio on 27.03.2018.
- */
 
 public class DBManager {
     private Context context;
@@ -21,9 +16,7 @@ public class DBManager {
     private DatabaseAssetHelper dbAssetHelper;
 
     public DBManager(Context context) {
-        this.context = context;/*
-        dbhelper = DatabaseHelper.getInstance(context);
-        dbhelper.openDataBase();*/
+        this.context = context;
         dbAssetHelper = new DatabaseAssetHelper(context);
     }
 

@@ -21,7 +21,6 @@
             android:padding="3dp">
 
             <TextView
-                android:id="@+id/derRuleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#40c4ff"

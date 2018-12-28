@@ -169,7 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(ConstantsSQL.EXPLANATION, substantiv.getExplanation());
         values.put(ConstantsSQL.RULE_ID, substantiv.getRuleId());
         values.put(ConstantsSQL.IS_FAVORITE, substantiv.isFavorite());
-        values.put(ConstantsSQL.FREQUENCE_RATE, substantiv.getFrequenceRate());
+        values.put(ConstantsSQL.FREQUENCE_RATE, substantiv.getFrequencyRate());
         values.put(ConstantsSQL.ANSWERS_COUNT, substantiv.getAnswersCount());
         values.put(ConstantsSQL.SCORE, substantiv.getScore());
         long inserted = mDataBase.insert(ConstantsSQL.SUBSTANTIV_TABLE, null, values);
@@ -214,7 +214,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     substantiv.setRule(rule);
                 }
                 substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
-                substantiv.setFrequenceRate(cursor.getInt(7));
+                substantiv.setFrequencyRate(cursor.getInt(7));
                 substantiv.setAnswersCount(cursor.getInt(8));
                 substantiv.setScore(cursor.getInt(9));
                 substantiv.addTranslation(Locales.EN, cursor.getString(10));
@@ -298,7 +298,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 substantiv.setRule(rule);
             }
             substantiv.setFavorite(cursor.getInt(6) == 1 ? true : false);
-            substantiv.setFrequenceRate(cursor.getInt(7));
+            substantiv.setFrequencyRate(cursor.getInt(7));
             substantiv.setAnswersCount(cursor.getInt(8));
             substantiv.setScore(cursor.getInt(9));
         } else Log.d(TAG, "DatabaseHelper, getQuiz: cursor is empty");

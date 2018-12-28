@@ -82,9 +82,9 @@ public class QuizManager {
         return currentQuiz.getRule();
     }
 
-    public String getResponse() {
+   /* public String getResponse() {
         return currentQuiz.getResponse();
-    }
+    }*/
 
     public String getGender() {
         return currentQuiz.getGender();
@@ -192,7 +192,7 @@ public class QuizManager {
 
 
     public int getFalsesCount() {
-        return currentQuiz.getFalsesCOunt();
+        return currentQuiz.getFalsesCount();
     }
 
     public int getQuizCount() {
