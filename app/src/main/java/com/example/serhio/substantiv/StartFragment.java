@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 /*
- * Fragment with a game mode choice
+ * Fragment with a choice of game mode
  */
 public class StartFragment extends Fragment {
 
