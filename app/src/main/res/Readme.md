@@ -1,31 +1,35 @@
+# Important
+The app is in process of development. This message will be deleted, when the application will be finished.
+
 # Substantiv
 
 
 [![N|Solid](http://i64.tinypic.com/v7xfr4.png)](https://nodesource.com/products/nsolid)
 
-Aceasta este o aplicatie Android pentru memorizarea genurilor substantivelor limbii germane si a regulilor ajutatoare pentru a recunoaste genul substantivelor.
-Punctul forte al acestei aplicatii, precum si ceea ce o deosebeste de multele aplicatii publicate pe "Google Play", este ca paralel cu invatarea genurilor substantivelor, dumneavoastra puteti memora si anumite reguli si indicii ajutatoare la recunoasterea genului substantivelor.
+This is an Android app, to help people memorizing the gender of nouns in German and it also includes rules that are helpful to recognize the gender. 
+The strong point of this application, as well as what differentiates it from the multitude of applications on "Google Play", is that together with learning the noun gender, the learner will discover certain rules and helpful hints that will help him/her to recognize German noun gender.
+
 
 Features:
 
-  - 1000 cele mai populare substantive
-  - O mare parte din substantive sunt insotite de reguli si indicii care ajuta la recunoasterea genului acestora
-  -  2 regime de joc:
- --invatarea treptata a substantivelor (regim "Invatare")
---invatarea aleatorie a substantivelor (regim "Intimplator/Aleator")
-- cele mai grele substantive pot fi invatate in modul de joc "Cele mai grele"
+  -	1000 most popular German nouns
+  - majority of the nouns are accompanied by the rules and clues that help to recognize their gender.
+  -  The game has 2 play modes: 
+    * learning the type of the nouns ("Learning - mode")
+    * learning random nouns ("Random/Random - mode")
+
+The most difficult nouns can be learned using "The heavy" mode.
 
 
-> Memorarea regulilor si indiciilor ajutatoare la stabilirea genului
-> substantivelor va va ajuta la crearea abilitatii de a recunoaste
-> genurile substantivelor la nivel intuitiv, asa cum o fac
-> vorbitorii nativi a limbii germane.
+> Memorizing the rules and clues that are helpful in determining the gender of nouns, 
+> will help the user create the ability to recognize the genders of nouns intuitively,
+> the same way native speakers do.
 
-Tin sa mentionez ca nu toate substantivele limbii germane se supun carorva reguli din care s-ar putea recunoaste genul acestora. Aceste substantive trebuiesc memorate fara ajutorul regulilor si indiciilor, deoarece acestea nu exista.
+I want to mention that not all German nouns have rules that help the learner understand the gender, or there are no tips to help the learner understand them, that’s, why they should be memorized by the learner, together with the article "der", "die", "das".
 
 ### Todos
 
- - Importul listelor de substantive proprii
+ - Import a personal list of nouns.
 
 
 # License
