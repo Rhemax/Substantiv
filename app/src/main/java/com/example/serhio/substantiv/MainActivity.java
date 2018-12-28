@@ -26,7 +26,7 @@ import com.example.serhio.substantiv.behavior.DefaultScenario;
 import com.example.serhio.substantiv.behavior.HardestScenario;
 import com.example.serhio.substantiv.behavior.ShuffleScenario;
 /*
- * The main class. The only activity. 
+ * The main class. The only activity.
  * Navigation in the application is carried out by replacing the current fragment with a new fragment.
  */
 public class MainActivity extends AppCompatActivity implements QuizFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener, StartFragment.OnFragmentInteractionListener {
