@@ -1,6 +1,3 @@
-# Important
-The app is in process of development. This message will be deleted, when the application will be finished.
-
 # Substantiv
 
 
