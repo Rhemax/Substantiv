@@ -4,11 +4,7 @@ The app is in process of development. This message will be deleted, when the app
 # Substantiv
 
 
-[url=https://imgbb.com/][img]https://i.ibb.co/ZLyLJBv/20200802-225235.gif[/img][/url]
-[url=https://ibb.co/H2tdFQ3][img]https://i.ibb.co/dcPgWyx/Screenshot-20200802-223703.png[/img][/url]
-[url=https://ibb.co/1bRshxn][img]https://i.ibb.co/0QYB83X/Screenshot-20200802-223717.png[/img][/url]
-[url=https://ibb.co/Qmg3QGy][img]https://i.ibb.co/kc7sBFN/Screenshot-20200802-224333.png[/img][/url]
-[url=https://ibb.co/WcYLNsF][img]https://i.ibb.co/fCPsVQt/Screenshot-20200802-224442.png[/img][/url]
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/ZLyLJBv/20200802-225235.gif" alt="20200802-225235" border="0" width="300"></a>
 
 This is an Android app, to help people memorizing the gender of nouns in German and it also includes rules that are helpful to recognize the gender. 
 The strong point of this application, as well as what differentiates it from the multitude of applications on "Google Play", is that together with learning the noun gender, the learner will discover certain rules and helpful hints that will help him/her to recognize German noun gender.
@@ -33,8 +29,10 @@ I want to mention that not all German nouns have rules that help the learner und
 
 
 # Screenshots
-![N|Solid](http://i64.tinypic.com/120th89.jpg)
-![N|Solid](http://i63.tinypic.com/hwn682.png)
+<a href="https://ibb.co/H2tdFQ3"><img src="https://i.ibb.co/dcPgWyx/Screenshot-20200802-223703.png" border="0" width="300"></a>
+<a href="https://ibb.co/1bRshxn"><img src="https://i.ibb.co/0QYB83X/Screenshot-20200802-223717.png" border="0" width="300"></a>
+<a href="https://ibb.co/Qmg3QGy"><img src="https://i.ibb.co/kc7sBFN/Screenshot-20200802-224333.png" border="0" width="300"></a>
+<a href="https://ibb.co/WcYLNsF"><img src="https://i.ibb.co/fCPsVQt/Screenshot-20200802-224442.png" border="0" width="300"></a>
 
 ### Todos
 
